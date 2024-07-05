@@ -2,3 +2,83 @@
   font-size: x-large;
   margin-left: 20px;
 }
+/* App.css */
+
+.App {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+.app-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+}
+
+h1 {
+  color: #333;
+  font-size: 2em;
+}
+
+label {
+  display: block;
+  margin-bottom: 20px;
+  font-size: 1.2em;
+  color: #555;
+}
+
+input[type="text"] {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+}
+
+.loading,
+.error {
+  margin-top: 20px;
+  font-size: 1.2em;
+  color: #d9534f;
+}
+
+.book-list {
+  margin-top: 20px;
+}
+
+.book {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.book h3 {
+  margin: 0;
+  color: #333;
+}
+
+.book p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.book img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.book-list p {
+  font-size: 1em;
+  color: #666;
+}

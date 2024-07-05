@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { DebounceInput } from "react-debounce-input";
 import "./App.css";
 
 function App() {
@@ -7,10 +8,6 @@ function App() {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  const handleInputChange = (event) => {
-    setSearch(event.target.value);
-  };
 
   useEffect(() => {
     if (search.trim() !== "") {
@@ -33,13 +30,20 @@ function App() {
     }
   };
 
+  const truncateText = (text, maxLength) => {
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + "...";
+  };
+
   return (
     <div className="App">
-      <Header />
-      <Label search={search} handleInputChange={handleInputChange} />
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
-      <List books={books} />
+      <div className="app-wrapper">
+        <Header />
+        <Label search={search} setSearch={setSearch} />
+        {loading && <p className="loading">Loading...</p>}
+        {error && <p className="error">{error}</p>}
+        <List books={books} truncateText={truncateText} />
+      </div>
     </div>
   );
 }
@@ -48,21 +52,23 @@ function Header() {
   return <h1>Find Book</h1>;
 }
 
-function Label({ search, handleInputChange }) {
+function Label({ search, setSearch }) {
   return (
     <label htmlFor="book-search">
       Search for a book:
-      <input
+      <DebounceInput
+        minLength={2}
+        debounceTimeout={300}
         type="text"
         name="search"
         value={search}
-        onChange={handleInputChange}
+        onChange={(e) => setSearch(e.target.value)}
       />
     </label>
   );
 }
 
-function List({ books }) {
+function List({ books, truncateText }) {
   if (books.length === 0) {
     return <p>No books found</p>;
   }
@@ -71,9 +77,18 @@ function List({ books }) {
     <div className="book-list">
       {books.map((book) => (
         <div key={book.id} className="book">
-          <h3>{book.volumeInfo.title}</h3>
-          <p>{book.volumeInfo.authors?.join(", ")}</p>
-          <p>{book.volumeInfo.description}</p>
+          {book.volumeInfo.imageLinks && (
+            <img
+              src={book.volumeInfo.imageLinks.thumbnail}
+              alt={book.volumeInfo.title}
+              className="book-image"
+            />
+          )}
+          <div className="book-details">
+            <h3>{book.volumeInfo.title}</h3>
+            <p>{book.volumeInfo.authors?.join(", ")}</p>
+            <p>{truncateText(book.volumeInfo.description || "", 100)}</p>
+          </div>
         </div>
       ))}
     </div>
